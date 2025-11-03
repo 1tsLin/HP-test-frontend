@@ -1,0 +1,56 @@
+<div class="modal-content text-light p-4 rounded" style="background-color: #2d3748;" *ngIf="vulnerabilities$ | async as vulnerabilities">
+  <h4 class="mb-3 text-info">Create Security Incident</h4>
+
+  <form [formGroup]="incidentForm" (ngSubmit)="submit()">
+    <!-- Vulnerability -->
+    <div class="mb-3">
+      <label for="vulnerability" class="form-label">Vulnerability</label>
+      <select id="vulnerability" class="form-select" formControlName="vulnerabilityId">
+        <option *ngFor="let v of vulnerabilities" [value]="v.id">
+          {{ v.title }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Assigned To -->
+    <div class="mb-3">
+      <label for="assignedTo" class="form-label">Assigned To</label>
+      <input
+        type="email"
+        id="assignedTo"
+        class="form-control"
+        formControlName="assignedTo"
+        placeholder="analyst@company.com"
+      />
+    </div>
+
+    <!-- Severity (Priority) -->
+    <div class="mb-3">
+      <label for="priority" class="form-label">Severity</label>
+      <select id="priority" class="form-select" formControlName="priority">
+        <option [value]="SeverityEnum.LOW">Low</option>
+        <option [value]="SeverityEnum.MEDIUM">Medium</option>
+        <option [value]="SeverityEnum.HIGH">High</option>
+        <option [value]="SeverityEnum.CRITICAL">Critical</option>
+      </select>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        id="description"
+        class="form-control"
+        formControlName="description"
+        placeholder="Investigation required..."
+        rows="3"
+      ></textarea>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+      <button type="submit" class="btn btn-primary"  [disabled]="incidentForm.invalid">Create Incident</button>
+    </div>
+  </form>
+</div>

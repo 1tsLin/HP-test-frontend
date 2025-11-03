@@ -1,0 +1,103 @@
+<div class="container">
+    <!-- Filters -->
+    <div class="d-flex flex-column flex-md-row justify-content-between mx-5 mt-4 gap-3">
+        <div class="d-flex flex-wrap gap-2 gap-md-3 m-0 m-md-2" role="group" aria-label="Severity filter">
+            <button type="button"     
+                class="btn"
+                [ngClass]="undefined === currentFilter ? 'btn-primary' : 'btn-outline-secondary text-light'"
+                [ngStyle]="undefined !== currentFilter ? {'background-color': '#252e3c'} : null"
+                (click)="getVulnerabilities()">
+                All
+            </button>
+            <button type="button"     
+                class="btn"
+                [ngClass]="SeverityEnum.CRITICAL === currentFilter ? 'btn-primary' : 'btn-outline-secondary text-light'"
+                [ngStyle]="SeverityEnum.CRITICAL !== currentFilter ? {'background-color': '#252e3c'} : null"
+                (click)="setFilter(SeverityEnum.CRITICAL)">
+                Critical
+            </button>
+            <button type="button"     
+                class="btn"
+                [ngClass]="SeverityEnum.HIGH === currentFilter ? 'btn-primary' : 'btn-outline-secondary text-light'"
+                [ngStyle]="SeverityEnum.HIGH !== currentFilter ? {'background-color': '#252e3c'} : null"
+                (click)="setFilter(SeverityEnum.HIGH)">
+                High
+            </button>
+            <button type="button"     
+                class="btn"
+                [ngClass]="SeverityEnum.MEDIUM === currentFilter ? 'btn-primary' : 'btn-outline-secondary text-light'"
+                [ngStyle]="SeverityEnum.MEDIUM !== currentFilter ? {'background-color': '#252e3c'} : null"
+                (click)="setFilter(SeverityEnum.MEDIUM)">
+                Medium
+            </button>
+            <button type="button"     
+                class="btn"
+                [ngClass]="SeverityEnum.LOW === currentFilter ? 'btn-primary' : 'btn-outline-secondary text-light'"
+                [ngStyle]="SeverityEnum.LOW !== currentFilter ? {'background-color': '#252e3c'} : null"
+                (click)="setFilter(SeverityEnum.LOW)">
+                Low
+            </button>
+        </div>
+        
+        <button type="button" class="btn btn-primary w-20" (click)="createIncident()">
+            + Create Incident
+        </button>
+    </div>
+
+    <!-- Table -->
+    <div class="mx-5">
+        <div class="card bg-dark border-secondary mx-2 mt-4">
+            <div class="card-header" style="background-color: #1c232f;">
+                <h4 class="mb-0 text-info">Active Vulnerabilities</h4>
+            </div>
+            
+            <div class="card-body p-0" style="background-color: #252e3c;">
+                <!-- Display vulnerability once loaded -->
+                <div *ngIf="vulnerabilities$ | async as vulnerabilities">
+                    <div *ngFor="let vulnerability of vulnerabilities" class="border-bottom border-secondary p-3">
+                        <div class="row align-items-center mb-2">
+                            <div class="col-auto">
+                                <span class="badge text-secondary" style="background-color: #2d3748;">{{ vulnerability.id }}</span>
+                            </div>
+                            <div class="col">
+                                <h5 class="text-white mb-0">{{ vulnerability.title }}</h5>
+                            </div>
+                            <div class="col-auto">
+                                <span class="badge px-3 py-2"
+                                    [ngClass]="{
+                                        'critical': vulnerability.severity === SeverityEnum.CRITICAL,
+                                        'high': vulnerability.severity === SeverityEnum.HIGH,
+                                        'medium': vulnerability.severity === SeverityEnum.MEDIUM,
+                                        'low': vulnerability.severity === SeverityEnum.LOW
+                                    }">
+                                    {{ vulnerability.severity }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-md-5">
+                            <div class="text-secondary">
+                                 <img src="/img/computer.png" alt="Logo" width="15" height="15" class="d-inline-block align-text-top me-2">
+                                <span>{{ vulnerability.system }}</span>
+                            </div>
+                            </div>
+                            <div class="col-md-3">
+                            <span class="text-secondary ">CVSS: {{ vulnerability.cvssScore }}</span>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="badge px-3 py-2"
+                                    [ngClass]="{
+                                        'open': vulnerability.status === StatusEnum.OPEN,
+                                        'in-progress': vulnerability.status === StatusEnum.IN_PROGRESS,
+                                        'resolved': vulnerability.status === StatusEnum.RESOLVED,
+                                    }">
+                                    {{ vulnerability.status }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

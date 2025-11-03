@@ -1,0 +1,55 @@
+// Colors
+$color-red: #dc3545;
+$color-orange: #fd7e14;
+$color-yellow: #ffc107;
+$color-green: #28a745;
+
+// Severity Badges
+@mixin severity-style($color) {
+  border: 1px solid $color;
+  color: $color;
+  background-color: rgba($color, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 1.5rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.critical {
+  @include severity-style($color-red);
+}
+
+.high {
+  @include severity-style($color-orange);
+}
+
+.medium {
+  @include severity-style($color-yellow);
+}
+
+.low {
+  @include severity-style($color-green);
+}
+
+// Status Badges
+@mixin status-style($color) {
+  border: 1px solid $color;
+  color: $color;
+  background-color: rgba($color, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.open {
+  @include severity-style($color-red);
+}
+
+.in-progress {
+  @include severity-style($color-orange);
+}
+
+.resolved {
+  @include severity-style($color-green);
+}
